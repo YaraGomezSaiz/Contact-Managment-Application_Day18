@@ -1,7 +1,22 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
+// //Import Store,actions
+import { Context } from "../store/appContext.js";
 
-export const AddContact = () => {
+export function AddContact() {
+	const { store, actions } = useContext(Context);
+
+	function createAgenda() {
+		return true;
+	}
+
+	useEffect(
+		() => {
+			actions.setContacts();
+		},
+		[createAgenda()]
+	);
+
 	return (
 		<div className="container">
 			<div>
@@ -23,7 +38,7 @@ export const AddContact = () => {
 						<label>Address</label>
 						<input type="text" className="form-control" placeholder="Enter address" />
 					</div>
-					<button type="button" className="btn btn-primary form-control">
+					<button type="button" className="btn btn-primary form-control" onClick={createAgenda}>
 						save
 					</button>
 					<Link className="mt-3 w-100 text-center" to="/">
@@ -33,4 +48,4 @@ export const AddContact = () => {
 			</div>
 		</div>
 	);
-};
+}
