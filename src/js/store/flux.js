@@ -5,10 +5,27 @@ const getState = ({ getStore, setStore }) => {
 	return {
 		store: {
 			baseURL: "https://assets.breatheco.de/apis/fake/contact",
-			agendaName: "AgendaHugo",
+			agendas: [],
+			agendaName: "",
 			contacts: []
 		},
 		actions: {
+			getAgendas() {
+				const store = getStore();
+				myFetch(store.baseURL, "/agenda", "GET", null).then(data => setStore({ agendas: data }));
+			},
+
+			selectAgenda(agendaName) {
+				setStore({ agendaName: agendaName });
+			},
+
+			getAgendaContacts() {
+				const store = getStore();
+				myFetch(store.baseURL, "/agenda/" + store.agendaName, "GET", null).then(data =>
+					setStore({ contacts: data })
+				);
+			},
+
 			createNewContact() {
 				const store = getStore();
 				myFetch(store.baseURL, "/", "POST", {
@@ -21,13 +38,6 @@ const getState = ({ getStore, setStore }) => {
 					let arrayCopy = [...store.contacts, data];
 					setStore({ contacts: arrayCopy });
 				});
-			},
-
-			getAgendaContacts() {
-				const store = getStore();
-				myFetch(store.baseURL, "/agenda/" + store.agendaName, "GET", null).then(data =>
-					setStore({ contacts: data })
-				);
 			},
 
 			updateContact(id, body) {
