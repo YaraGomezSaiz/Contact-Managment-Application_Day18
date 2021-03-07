@@ -10,7 +10,6 @@ export async function myFetch(baseURL, path, method, body) {
 			body: JSON.stringify(body),
 			headers: { "Content-Type": "application/json" }
 		};
-		console.log(fetchParams);
 	}
 
 	return fetch(baseURL + path, fetchParams).then(response => response.json());

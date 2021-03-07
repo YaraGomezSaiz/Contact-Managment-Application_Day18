@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
+//Import Store,actions
+import { Context } from "../store/appContext.js";
 
 export const Modal = props => {
-	const [state, setState] = useState({
-		//initialize state here
-	});
+	const { store, actions } = useContext(Context);
+
 	return (
 		<div className="modal" tabIndex="-1" role="dialog" style={{ display: props.show ? "inline-block" : "none" }}>
 			<div className="modal-dialog" role="document">
 				<div className="modal-content">
 					<div className="modal-header">
-						<h5 className="modal-title">Are you sure?</h5>
+						<h5 className="modal-title">
+							Borrar Contacto: {props.contact != undefined ? props.contact.full_name : ""}
+						</h5>
 						{props.onClose ? (
 							<button
 								onClick={() => props.onClose()}
@@ -26,14 +29,18 @@ export const Modal = props => {
 						)}
 					</div>
 					<div className="modal-body">
-						<p>Warning: unknown consequences after this point... Kidding!</p>
+						<p>¿Estas seguro que quieres borrar el contacto?</p>
 					</div>
 					<div className="modal-footer">
 						<button type="button" className="btn btn-primary">
-							Oh no!
+							No
 						</button>
-						<button type="button" className="btn btn-secondary" data-dismiss="modal">
-							Do it!
+						<button
+							type="button"
+							className="btn btn-secondary"
+							data-dismiss="modal"
+							onClick={() => actions.deleteContact(props.contact.id)}>
+							Confirmar
 						</button>
 					</div>
 				</div>
@@ -48,7 +55,8 @@ export const Modal = props => {
 Modal.propTypes = {
 	history: PropTypes.object,
 	onClose: PropTypes.func,
-	show: PropTypes.bool
+	show: PropTypes.bool,
+	contact: PropTypes.object
 };
 
 /**

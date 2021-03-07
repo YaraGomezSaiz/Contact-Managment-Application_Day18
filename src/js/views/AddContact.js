@@ -6,16 +6,17 @@ import { Context } from "../store/appContext.js";
 export function AddContact() {
 	const { store, actions } = useContext(Context);
 
-	function createAgenda() {
-		return true;
-	}
+	let body = {
+		full_name: "",
+		email: "",
+		agenda_slug: store.agendaName,
+		address: "",
+		phone: ""
+	};
 
-	useEffect(
-		() => {
-			actions.setContacts();
-		},
-		[createAgenda()]
-	);
+	function createNewContact(body) {
+		actions.createNewContact(body);
+	}
 
 	return (
 		<div className="container">
@@ -24,21 +25,44 @@ export function AddContact() {
 				<form>
 					<div className="form-group">
 						<label>Full Name</label>
-						<input type="text" className="form-control" placeholder="Full Name" />
+						<input
+							type="text"
+							className="form-control"
+							placeholder="Full Name"
+							onChange={() => (body.full_name = event.target.value)}
+						/>
 					</div>
 					<div className="form-group">
 						<label>Email</label>
-						<input type="email" className="form-control" placeholder="Enter email" />
+						<input
+							type="email"
+							className="form-control"
+							placeholder="Enter email"
+							onChange={() => (body.email = event.target.value)}
+						/>
 					</div>
 					<div className="form-group">
 						<label>Phone</label>
-						<input type="phone" className="form-control" placeholder="Enter phone" />
+						<input
+							type="phone"
+							className="form-control"
+							placeholder="Enter phone"
+							onChange={() => (body.phone = event.target.value)}
+						/>
 					</div>
 					<div className="form-group">
 						<label>Address</label>
-						<input type="text" className="form-control" placeholder="Enter address" />
+						<input
+							type="text"
+							className="form-control"
+							placeholder="Enter address"
+							onChange={() => (body.address = event.target.value)}
+						/>
 					</div>
-					<button type="button" className="btn btn-primary form-control" onClick={createAgenda}>
+					<button
+						type="button"
+						className="btn btn-primary form-control"
+						onClick={() => createNewContact(body)}>
 						save
 					</button>
 					<Link className="mt-3 w-100 text-center" to="/">

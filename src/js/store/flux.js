@@ -26,15 +26,23 @@ const getState = ({ getStore, setStore }) => {
 				);
 			},
 
-			createNewContact() {
+			createNewAgenda() {
 				const store = getStore();
 				myFetch(store.baseURL, "/", "POST", {
-					full_name: "Yara Gomez",
-					email: "dave@gmail.com",
-					agenda_slug: "YaraGS_Agenda",
+					full_name: "new Agenda",
+					email: "example@gmail.com",
+					agenda_slug: store.agendaName,
 					address: "47568 NW 34ST, 33434 FL, USA",
 					phone: "7864445566"
 				}).then(data => {
+					let arrayCopy = [...store.agendas, data];
+					setStore({ agendas: arrayCopy });
+				});
+			},
+
+			createNewContact(body) {
+				const store = getStore();
+				myFetch(store.baseURL, "/", "POST", body).then(data => {
 					let arrayCopy = [...store.contacts, data];
 					setStore({ contacts: arrayCopy });
 				});
@@ -48,7 +56,29 @@ const getState = ({ getStore, setStore }) => {
 					arrayCopy[arrayPos] = body;
 					setStore({ contacts: arrayCopy });
 				});
-				// data => setStore({ contacts: data })
+			},
+
+			deleteContact(id) {
+				const store = getStore();
+				myFetch(store.baseURL, "/" + id, "DELETE", null).then(data => {
+					let arrayCopy = [...store.contacts];
+					let arrayPos = arrayCopy.findIndex(item => item.id === id);
+					arrayCopy.splice(arrayPos, 1);
+					setStore({ contacts: arrayCopy });
+				});
+			},
+
+			deleteAgenda() {
+				const store = getStore();
+				myFetch(store.baseURL, "/agenda/" + store.agendaName, "DELETE", null).then(data => {
+					let arrayCopy = [...store.agendas];
+					let arrayPos = arrayCopy.findIndex(item => item === store.agendaName);
+					arrayCopy.splice(arrayPos, 1);
+					setStore({ agendas: arrayCopy });
+					let blank = [];
+					setStore({ agendaName: "" });
+					setStore({ contacts: blank });
+				});
 			}
 			//(Arrow) Functions that update the Store
 			// Remember to use the scope: scope.state.store & scope.setState()

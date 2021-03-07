@@ -7,9 +7,7 @@ import { Context } from "../store/appContext.js";
 
 export const ContactCard = props => {
 	const { store, actions } = useContext(Context);
-	const [state, setState] = useState({
-		//initialize state here
-	});
+
 	let body = {
 		full_name: props.contact.full_name,
 		email: props.contact.email,
@@ -17,7 +15,6 @@ export const ContactCard = props => {
 		address: props.contact.address,
 		phone: props.contact.phone
 	};
-	console.log(body);
 
 	return (
 		<li className="list-group-item">
@@ -30,9 +27,7 @@ export const ContactCard = props => {
 						<button className="btn" onClick={() => actions.updateContact(props.contact.id, body)}>
 							<i className="fas fa-pencil-alt mr-3" />
 						</button>
-						<button className="btn" onClick={() => actions.createNewContact()}>
-							+
-						</button>
+
 						<button className="btn" onClick={() => props.onDelete()}>
 							<i className="fas fa-trash-alt" />
 						</button>
