@@ -4,9 +4,14 @@ import PropTypes from "prop-types";
 import MikePhoto from "../../img/m101.jpg";
 //Import Store,actions
 import { Context } from "../store/appContext.js";
+import { Link } from "react-router-dom";
+
+import { AddContact } from "../views/AddContact.js";
+import { Modal } from "./Modal.js";
 
 export const ContactCard = props => {
 	const { store, actions } = useContext(Context);
+	const [state, setState] = useState({ showModal: false });
 
 	let body = {
 		full_name: props.contact.full_name,
@@ -24,11 +29,12 @@ export const ContactCard = props => {
 				</div>
 				<div className="col-12 col-sm-6 col-md-9 text-center text-sm-left">
 					<div className=" float-right">
-						<button className="btn" onClick={() => actions.updateContact(props.contact.id, body)}>
+						<Link className="btn" to={{ pathname: "/edit", state: { body: body, id: props.contact.id } }}>
 							<i className="fas fa-pencil-alt mr-3" />
-						</button>
+						</Link>
 
-						<button className="btn" onClick={() => props.onDelete()}>
+						<button className="btn" onClick={() => actions.updateContact(props.contact.id, body)} />
+						<button className="btn" onClick={() => setState({ showModal: true })}>
 							<i className="fas fa-trash-alt" />
 						</button>
 					</div>
@@ -56,6 +62,7 @@ export const ContactCard = props => {
 					<span className="text-muted small text-truncate">{props.contact.email}</span>
 				</div>
 			</div>
+			<Modal contact={props.contact} show={state.showModal} onClose={() => setState({ showModal: false })} />
 		</li>
 	);
 };

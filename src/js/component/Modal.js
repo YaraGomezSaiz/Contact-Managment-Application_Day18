@@ -32,7 +32,7 @@ export const Modal = props => {
 						<p>¿Estas seguro que quieres borrar el contacto?</p>
 					</div>
 					<div className="modal-footer">
-						<button type="button" className="btn btn-primary">
+						<button type="button" className="btn btn-primary" onClick={() => props.onClose()}>
 							No
 						</button>
 						<button
